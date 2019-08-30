@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Hello Gui</title>
+  <meta name="description" content="Gui for a Holochain app">
+  <meta name="author" content="Holochain">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+
+</head>
+
+<body>
+   <button onclick="hello()" type="button">Say Hello</button>
+   <div><span>Response:</span><span id="output"></span></div>
+   <script type="text/javascript" src="hc-web-client/dist/hc-web-client-0.5.1.browser.min.js"></script>
+  <script type="text/javascript">
+    function hello() {
+      holochainclient.connect({ url: "ws://localhost:8080" }).then(({callZome, close}) => {
+        callZome('test-instance', 'hello', 'hello_holo')({"args": {} }).then((result) => update_span(result))
+      })
+    }
+    function update_span(result) {
+      var span = document.getElementById('output');
+      var output = JSON.parse(result);
+      span.textContent = " " + output.Ok;
+    }
+  </script>
+</body>
+</html>
