@@ -15,22 +15,13 @@
 <body>
    <button onclick="hello()" type="button">Say Hello</button>
    <div><span>Response:</span><span id="output"></span></div>
+   <input type="text" id="name" placeholder="Enter your name :)"><br>
+   <button onclick="create_person()" type="button">Submit Name</button>
+   <div><span>Address:</span><span id="address_output"></span></div>
+   <input type="text" id="address_in" placeholder="Enter the entry address"><br>
+   <button onclick="retrieve_person()" type="button">Get Entry</button>
+   <div><span>Person:</span><span id="entry_output"></span></div>
    <script type="text/javascript" src="hc-web-client/hc-web-client-0.5.1.browser.min.js"></script>
-  <script type="text/javascript">
-    // Connection state
-    var holochain_connection = holochainclient.connect({ url: "ws://localhost:3401"});
-    
-    function hello() {
-      holochain_connection.then(({callZome, close}) => {
-        callZome('test-instance', 'hello', 'hello_holo')({"args": {} }).then((result) => update_span(result))
-      })
-    }
-
-    function update_span(result) {
-      var span = document.getElementById('output');
-      var output = JSON.parse(result);
-      span.textContent = " " + output.Ok;
-    }
-  </script>
+  <script type="text/javascript" src="hello.js"></script>
 </body>
 </html>
