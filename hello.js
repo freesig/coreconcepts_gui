@@ -1,6 +1,8 @@
 function hello() {
-  holochainclient.connect({ url: "ws://localhost:8080" }).then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
+  var port = document.getElementById('port').value;
+  var instance = document.getElementById('instance').value;
+  holochainclient.connect({ url: "ws://localhost:" + port }).then(({callZome, close}) => {
+    callZome(instance, 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
   })
 }
 function update_element(result, id) {
@@ -16,13 +18,17 @@ function update_person(result) {
 }
 function create_person() {
   var name = document.getElementById('name').value;
-  holochainclient.connect({ url: "ws://localhost:8080" }).then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'create_person')({person: {name: name} }).then((result) => update_element(result, 'address_output'))
+  var port = document.getElementById('port').value;
+  var instance = document.getElementById('instance').value;
+  holochainclient.connect({ url: "ws://localhost:" + port }).then(({callZome, close}) => {
+    callZome(instance, 'hello', 'create_person')({person: {name: name} }).then((result) => update_element(result, 'address_output'))
   })
 }
 function retrieve_person() {
   var address = document.getElementById('address_in').value;
-  holochainclient.connect({ url: "ws://localhost:8080" }).then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'retrieve_person')({address: address}).then((result) => update_person(result))
+  var port = document.getElementById('port').value;
+  var instance = document.getElementById('instance').value;
+  holochainclient.connect({ url: "ws://localhost:" + port }).then(({callZome, close}) => {
+    callZome(instance, 'hello', 'retrieve_person')({address: address}).then((result) => update_person(result))
   })
 }
