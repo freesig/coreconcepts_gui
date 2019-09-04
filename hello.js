@@ -26,7 +26,7 @@ function hello() {
 function create_person() {
   var name = document.getElementById('name').value;
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'create_person')({person: {name: name} }).then((result) => update_element(result, 'address_output'))
   })
 }
@@ -34,7 +34,7 @@ function create_person() {
 function retrieve_person() {
   var address = document.getElementById('address_in').value;
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'retrieve_person')({address: address}).then((result) => update_person(result))
   })
 }
