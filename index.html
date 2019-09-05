@@ -12,24 +12,22 @@
 
 </head>
 
-<body>
+<body onload="get_agent_id()">
+  <h3 id="agent_id"></h3>
    <h4>Set instance</h4>
-   <input type="text" id="instance" placeholder="Enter your instance id">
+   <input type="text" id="instance" onfocusout="get_agent_id()" placeholder="Enter your instance id">
    <h4>Say hello</h4>
    <div><span>Response:</span><span id="output"></span></div>
    <button onclick="hello()" type="button">Say Hello</button>
-   <h4>Create person entry</h4>
-   <div><input type="text" id="name" placeholder="Enter your name :)">
-     <span>Address:</span><span id="address_output"></span></div>
-   <button onclick="create_person()" type="button">Create Person</button>
-   <h4>Retrieve person entry</h4>
-   <div><input type="text" id="address_in" placeholder="Enter the entry address">
-     <span>Person:</span><span id="entry_output"></span></div>
-   <button onclick="retrieve_person()" type="button">Get Entry</button>
-   <script type="text/javascript" src="hc-web-client/hc-web-client-0.5.1.browser.min.js"></script>
-   <div><span>Person:</span><span id="entry_output"></span></div>
-   <input type="text" id="port" placeholder="Enter the holochain port"><br>
-   <input type="text" id="instance" placeholder="Enter the holochain instance"><br>
+   <h4>Create Post</h4>
+   <div><textarea id="post" placeholder="Enter your name :)"></textarea>
+     <span>Address:</span><span id="post_output"></span></div>
+   <button onclick="create_post()" type="button">Create Post</button>
+   <h4>Retrieve Posts</h4>
+   <div><input type="text" id="post_agent_id" placeholder="Enter the address of the agent to see their posts">
+   <ul id="posts_output"></ul>
+   <button onclick="retrieve_posts()" type="button">Get Posts</button>
+   <script type="text/javascript" src="hc-web-client/dist/hc-web-client-0.5.1.browser.min.js"></script>
   <script type="text/javascript" src="hello.js"></script>
 </body>
 </html>
