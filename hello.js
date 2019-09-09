@@ -9,7 +9,7 @@ function update_element(result, id) {
   var output = JSON.parse(result);
   el.textContent = " " + output.Ok;
 }
-function update_posts(result) {
+function display_posts(result) {
   var list = document.getElementById('posts_output');
   list.innerHTML = "";
   var output = JSON.parse(result);
@@ -27,14 +27,15 @@ function create_post() {
   var instance = document.getElementById('instance').value;
   var timestamp = Date.now();
   holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
-    callZome(instance, 'hello', 'create_post')({message: message, timestamp: timestamp }).then((result) => update_element(result, 'post_output'))
+    callZome(instance, 'hello', 'create_post')({message: message, timestamp: timestamp }).then((result) => update_element(result, 'post_address'))
   })
 }
+
 function retrieve_posts() {
   var address = document.getElementById('post_agent_id').value;
   var instance = document.getElementById('instance').value;
   holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
-    //callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => update_posts(result))
+    //callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => display_posts(result))
     callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => console.log(result))
   })
 }
