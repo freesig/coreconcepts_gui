@@ -13,7 +13,6 @@ function display_posts(result) {
   var list = document.getElementById('posts_output');
   list.innerHTML = "";
   var output = JSON.parse(result);
-  console.log(output.Ok);
   var posts = output.Ok.sort((a, b) => a[1].timestamp - b[1].timestamp);
   for (i of posts.entries()) {
     var post = i[1];
@@ -36,16 +35,14 @@ function delete_post(id) {
 function edit_post(parent_node) {
   var node = document.createElement("DIV");
   var message = parent_node.childNodes[0].data;
-  console.log(message);
   var post_id = parent_node.childNodes[1].value;
-  var submit_button = "<button onclick=\"update_post(\'" + post_id + "\', \'" + message + "\')\" type=\"button\">Submit</button>";
+  var submit_button = "<button onclick=\"update_post(\'" + post_id + "\', this.parentNode)\" type=\"button\">Submit</button>";
   node.innerHTML = "<input type=\"text\" value=\"" + message + "\"> " + submit_button;
   parent_node.appendChild(node);
 }
 
-function update_post(address, message) {
-  console.log(address);
-  console.log(message);
+function update_post(address, parent_node) {
+  var message = parent_node.childNodes[0].value;
   var timestamp = Date.now();
   var instance = document.getElementById('instance').value;
   holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
