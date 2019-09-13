@@ -1,6 +1,8 @@
+var holochain_connection = holochainclient.connect({ url: "ws://localhost:3401"});
+
 function hello() {
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
   })
 }
@@ -28,7 +30,7 @@ function display_posts(result) {
 
 function delete_post(id) {
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'delete_post')({post_address: id.value}).then((result) => console.log(result))
   })
 }
@@ -45,7 +47,7 @@ function update_post(address, parent_node) {
   var message = parent_node.childNodes[0].value;
   var timestamp = Date.now();
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'update_post')({post_address: address, message, timestamp}).then((result) => console.log(result))
   })
 }
@@ -54,22 +56,33 @@ function create_post() {
   var message = document.getElementById('post').value;
   var instance = document.getElementById('instance').value;
   var timestamp = Date.now();
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
-    callZome(instance, 'hello', 'create_post')({message: message, timestamp: timestamp }).then((result) => update_element(result, 'post_address'))
+  holochain_connection.then(({callZome, close}) => {
+    callZome(instance, 'hello', 'create_post')({message: message, timestamp: timestamp })
+      .then((result) => {
+        const r = JSON.parse(result);
+        if(r.Ok){
+          update_element(result, 'post_address')
+        } else {
+          console.log(r)
+          const err = JSON.parse(result);
+          const val_err = JSON.parse(err.Err.Internal);
+          alert(val_err.kind.ValidationFailed);
+        }
+      })
   })
 }
 
 function retrieve_posts() {
   var address = document.getElementById('post_agent_id').value;
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => display_posts(result))
   })
 }
 
 function get_agent_id() {
   var instance = document.getElementById('instance').value;
-  holochainclient.connect({ url: "ws://localhost:3401"}).then(({callZome, close}) => {
+  holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'get_agent_id')({}).then((result) => update_element(result, 'agent_id'))
   })
 }
