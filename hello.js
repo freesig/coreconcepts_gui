@@ -1,16 +1,13 @@
+// Connection state
 var holochain_connection = holochainclient.connect({ url: "ws://localhost:3401"});
 
-function hello() {
-  var instance = document.getElementById('instance').value;
-  holochain_connection.then(({callZome, close}) => {
-    callZome(instance, 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
-  })
-}
+// Render funcitons
 function update_element(result, id) {
   var el = document.getElementById(id);
   var output = JSON.parse(result);
   el.textContent = " " + output.Ok;
 }
+
 function display_posts(result) {
   var list = document.getElementById('posts_output');
   list.innerHTML = "";
@@ -28,19 +25,34 @@ function display_posts(result) {
   }
 }
 
+function edit_post(parent_node) {
+  var node = document.createElement("DIV");
+  const message = parent_node.childNodes[0].data;
+  const post_id = parent_node.childNodes[1].value;
+
+  const submit_button = "<button onclick=\"update_post(\'" 
+    + post_id 
+    + "\', this.parentNode)\" type=\"button\">Submit</button>";
+  const edit_input = "<input type=\"text\" value=\"" + message + "\"> ";
+
+  node.innerHTML = edit_input + submit_button;
+  parent_node.appendChild(node);
+}
+
+// Zome calls
+
+function hello() {
+  var instance = document.getElementById('instance').value;
+  holochain_connection.then(({callZome, close}) => {
+    callZome(instance, 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
+  })
+}
+
 function delete_post(id) {
   var instance = document.getElementById('instance').value;
   holochain_connection.then(({callZome, close}) => {
     callZome(instance, 'hello', 'delete_post')({post_address: id.value}).then((result) => console.log(result))
   })
-}
-function edit_post(parent_node) {
-  var node = document.createElement("DIV");
-  var message = parent_node.childNodes[0].data;
-  var post_id = parent_node.childNodes[1].value;
-  var submit_button = "<button onclick=\"update_post(\'" + post_id + "\', this.parentNode)\" type=\"button\">Submit</button>";
-  node.innerHTML = "<input type=\"text\" value=\"" + message + "\"> " + submit_button;
-  parent_node.appendChild(node);
 }
 
 function update_post(address, parent_node) {
@@ -63,9 +75,7 @@ function create_post() {
         if(r.Ok){
           update_element(result, 'post_address')
         } else {
-          console.log(r)
-          const err = JSON.parse(result);
-          const val_err = JSON.parse(err.Err.Internal);
+          const val_err = JSON.parse(r.Err.Internal);
           alert(val_err.kind.ValidationFailed);
         }
       })
