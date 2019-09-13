@@ -41,7 +41,6 @@ function retrieve_posts() {
   var address = document.getElementById('post_agent_id').value;
   var instance = document.getElementById('instance').value;
   holochain_connection.then(({callZome, close}) => {
-    callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => update_posts(result))
     callZome(instance, 'hello', 'retrieve_posts')({address: address}).then((result) => display_posts(result))
   })
 }
