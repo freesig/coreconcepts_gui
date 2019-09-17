@@ -18,14 +18,16 @@ function update_person(result) {
 
 function hello() {
   holochain_connection.then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
+    callZome('test-instance', 'hello', 'hello_holo')({"args": {} })
+      .then((result) => update_element(result, 'output'))
   })
 }
 
 function create_person() {
   var name = document.getElementById('name').value;
   holochain_connection.then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'create_person')({person: {name: name} }).then((result) => update_element(result, 'address_output'))
+    callZome('test-instance', 'hello', 'create_person')({person: {name: name} })
+      .then((result) => update_element(result, 'address_output'))
   })
 }
 
