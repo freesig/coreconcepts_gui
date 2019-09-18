@@ -2,6 +2,7 @@ var holochain_connection = holochainclient.connect({ url: "ws://localhost:3401"}
 
 // Render funcitons
 function update_element(result, id) {
+  console.log(result);
   var el = document.getElementById(id);
   var output = JSON.parse(result);
   el.textContent = " " + output.Ok;
@@ -18,16 +19,15 @@ function update_person(result) {
 
 function hello() {
   holochain_connection.then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'hello_holo')({"args": {} })
-      .then((result) => update_element(result, 'output'))
+    callZome('test-instance', 'hello', 'hello_holo')({"args": {} }).then((result) => update_element(result, 'output'))
   })
 }
 
 function create_person() {
   var name = document.getElementById('name').value;
+  console.log(name);
   holochain_connection.then(({callZome, close}) => {
-    callZome('test-instance', 'hello', 'create_person')({person: {name: name} })
-      .then((result) => update_element(result, 'address_output'))
+    callZome('test-instance', 'hello', 'create_person')({"person": {name: name} }).then((result) => console.log(result, 'address_output'))
   })
 }
 
