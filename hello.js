@@ -9,6 +9,7 @@ function update_element(result, id) {
   var output = JSON.parse(result);
   el.textContent = " " + output.Ok;
 }
+
 function display_posts(result) {
   var list = document.getElementById('posts_output');
   list.innerHTML = "";
@@ -32,6 +33,7 @@ function delete_post(id) {
     callZome(instance, 'hello', 'delete_post')({post_address: id.value}).then((result) => console.log(result))
   })
 }
+
 function edit_post(parent_node) {
   var node = document.createElement("DIV");
   var message = parent_node.childNodes[0].data;
@@ -40,6 +42,7 @@ function edit_post(parent_node) {
   node.innerHTML = "<input type=\"text\" value=\"" + message + "\"> " + submit_button;
   parent_node.appendChild(node);
 }
+
 
 function update_post(address, parent_node) {
   var message = parent_node.childNodes[0].value;
